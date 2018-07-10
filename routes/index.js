@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const Members = require("../models/Members");
+
 // Kullanıcı Session Kontrolünün Yapıldığı Ara Katman
 var middleware = {
   requireAuthentication: function (req, res, next) {
@@ -34,19 +36,38 @@ router.get('/hayvan-yem-al', middleware.requireAuthentication, function (req, re
 // Hayvan Ve Yem Aldırma İşlemleri
 router.post('/hayvan-yem-al', middleware.requireAuthentication, function (req, res, next) {
 
-  
+
 
 });
 
 // Login İşleminin Yapıldığı Post İşlemi
 router.post('/', function (req, res, next) {
-  
+
 });
 
 //Kullanıcı Kayıt İşleminin Yapıldığı Post İşlemi
 router.post('/login', function (req, res, next) {
+  const member = new Members({
+    name: "qwe asd",
+    surName: "qwe asd",
+    userName: "qwe asd",
+    password: "qwe asd",
+    eMail: "qwe asd",
+    resources: [
+      { message: "qweeqwqwe" },
+      { message: "asdasdas" }
+    ],
+    published: true
+  });
 
-  
+  book.save((err, data) => {
+    if (err) {
+      res.json(err);
+    }
+    else {
+      res.json(data);
+    }
+  });
 });
 
 // Login Sayfası Yönlendirme
@@ -80,7 +101,7 @@ router.get('/altin-islem', middleware.requireAuthentication, function (req, res,
 //Altın Satma ve Alma İşlemlerinin Yapıldığı Kısım
 router.post('/altin-islem-al', function (req, res, next) {
 
-  
+
 });
 
 router.post('/altin-islem-sat', function (req, res, next) {
