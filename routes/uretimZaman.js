@@ -1,4 +1,4 @@
-
+var Member=require("../models/Members.js");
 var exports=module.exports={
 
 diffMin:function (dt1, dt2) 
@@ -32,7 +32,9 @@ sellEgg:function(quantity){//1 yumurta 2 coin
 sellHoney:function(quantity){//1br bal 1coin
     return quantity*1;
 },
-
+sellSeed:function(quantity){//1br yem 1coin
+    return quantity*1;
+},
 //hayvanların yem tüketimi
 
 eatSeedCow:function(time){//inek dkda 5 yem
@@ -44,4 +46,22 @@ eatSeedChicken:function(time){//tavuk dkda 2 yem
 eatSeedBee:function(time){//arı dkda 1 yem
     return time*1;
 },
+requireAuthentication: function (req, res, next) {
+    //if (req.session.account) {
+
+        var varmi = false;
+        Member.findOne({userName:req.body.userName},function(err,data){
+            if(err){res.send("hataMidİç"); throw err;}
+            else{
+                req.session.account = data;
+                res.locals.account = req.session.account;
+                next();
+            }
+        });
+  /*  } else {
+        res.send("hataMidDış");//res.redirect('/login');
+    }*/
+  }
+
+
 };
