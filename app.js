@@ -4,9 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose");
+var session=require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var kayit=require('./routes/kayit.js');
+var para=require('./routes/para.js');
+var satinAl=require('./routes/satinal.js');
 
 var app = express();
 
@@ -18,6 +22,11 @@ mongoose.connection.on("open", function () {
 mongoose.connection.on("error", function (err) {
   console.log("Hata :" + err);
 });
+app.use(session({
+  secret:'omer5000',
+  resave:false,
+  saveUninitialized:false
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,7 +40,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/kayit',kayit);
+app.use('/',para);
+app.use('/',satinAl);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
