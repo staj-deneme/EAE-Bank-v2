@@ -5,98 +5,162 @@ var Member=require("../models/Members.js");
 var fonk = require("./uretimZaman.js");
 
 /* GET home page. */
+/*
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
-});
+});*/
 
-function uretimKaynak(i) {
-  return new Promise(function (resolve, reject) {
+function uretimKaynak(data) {  
     //req.session.accout.resources.cow[i];
       //inek
       {
-        if (req.session.account.resources.cow == null) {
+        if (data.resources.cow == null) {
 
         } else {
-          for (var j = 0; j <req.session.account.resources.cow.length; j++) {
-            if (req.session.account.resources.seed >= 50) {
-              var aydi=req.session.account._id;
-              var btime = new Date(req.session.account.resources.cow[j].cal);
+          for (var j = 0; j <data.resources.cow.length; j++) {
+              var btime = new Date(data.resources.cow[j].cal);
               var now = new Date();
               var dif = fonk.diffMin(now, btime);
-              var milkU = parseInt(fonk.cowMilk(dif))+parseInt(req.session.account.resources.milk);
+              var milkU = parseInt(fonk.cowMilk(dif))+parseInt(data.resources.milk);
+              var yeniYem=data.resources.seed-fonk.eatSeedCow(dif)
               
-              Member.findByIdAndUpdate(aydi,{'resources.milk':milkU}
-                ,function(err,data){
-                    if(err){console.log("update hata"); throw err;}
-                    else{
-                        
-                        res.json(data);
-                    }        
-                });  
-            }
+              if (data.resources.seed >= fonk.eatSeedChicken(dif)) {
+                data.resources.seed=yeniYem;
+                data.resources.milk=milkU;
+                data.resources.cow[j].cal=new Date();              
+              }else{/*yem yok*/}
           }
         }
       }
-    resolve("Herşey Tamam");
-  });
-
-}
-function tuketimKaynak(i) {
-  return new Promise(function (resolve, reject) {
-      //inek
       {
-        if (dizi.members[i].resources.cow == null) {
-
+        if (data.resources.chicken == null) {
+          //tavuk yok
         } else {
-          for (var j = 0; j < dizi.members[i].resources.cow.length; j++) {
-            var btime = new Date(dizi.members[i].resources.cow[j].boughtTime);
+          for (var j = 0; j <data.resources.chicken.length; j++) {
+           
+            var btime = new Date(data.resources.chicken[j].cal);
             var now = new Date();
             var dif = fonk.diffMin(now, btime);
-            if (dizi.members[i].resources.seed >= fonk.eatSeedCow(dif)) {
-              dizi.members[i].resources.seed -= fonk.eatSeedCow(dif);
+            var eggU = parseInt(fonk.chickenEgg(dif))+parseInt(data.resources.egg);
+            var yeniYem=data.resources.seed-fonk.eatSeedChicken(dif)
+              
+            if (data.resources.seed >= fonk.eatSeedChicken(dif)) {
+              data.resources.seed=yeniYem;
+              data.resources.egg=eggU;
+              data.resources.chicken[j].cal=new Date();              
+            }else{/*yem yok*/}
+          }
+        }
+      }
+      {
+        if (data.resources.bee == null) {
+
+        } else {
+          for (var j = 0; j <data.resources.bee.length; j++) {
+            if (data.resources.seed >= 50) {
+              var btime = new Date(data.resources.bee[j].cal);
+              var now = new Date();
+              var dif = fonk.diffMin(now, btime);
+              var honeyU = parseInt(fonk.cowMilk(dif))+parseInt(data.resources.honey);
+              var yeniYem=data.resources.seed-fonk.eatSeedBee(dif)
+              if (data.resources.seed >= fonk.eatSeedBee(dif)) {
+                data.resources.seed=yeniYem;
+                data.resources.honey=honeyU;
+                data.resources.bee[j].cal=new Date();              
+              }else{/*yem yok*/}
             }
           }
         }
       }
-    resolve("Herşey Tamam");
-  });
+    return data;
 }
-function olum(i) {
-  return new Promise(function (resolve, reject) {
-   
 
-        //inek
+function olum(data) {
+   //inek
         {
-          if (dizi.members[i].cow == null) {
+          if (data.resources.cow == null) {
             //alert("inek yok");  console.log("inek yok");
           } else {
-            for (var j = 0; j < dizi.members[i].cow.length; j++) {
+              var boy= data.resources.cow.length;
+            for (var j = 0; j <boy; j++) {
 
-              var btime = new Date(dizi.members[i].cow[j].boughtTime);
+              var btime = new Date(data.resources.cow[j].death);
               var now = new Date();
               var dif = fonk.diffMin(now, btime);
               if (dif >= 30) {
-                var del = dizi.members[i].cow.splice(j, 1);
-                var del2 = dizi2.members[i].resources.cow.splice(j, 1);
+                var del = data.resources.cow.splice(j, 1);
+                j--;
+                boy--;
               }
             }
           }
-        }       
+        }
+    //tavuk
+    {
+      if (data.resources.chicken == null) {
+        //alert("inek yok");  console.log("inek yok");
+      } else {
+          var boy= data.resources.chicken.length;
+        for (var j = 0; j <boy; j++) {
 
-    resolve("Herşey Tamam");
-  });
+          var btime = new Date(data.resources.chicken[j].death);
+          var now = new Date();
+          var dif = fonk.diffMin(now, btime);
+          if (dif >= 30) {
+            var del = data.resources.chicken.splice(j, 1);
+            j--;
+            boy--;
+          }
+        }
+      }
+    }
+    //arı
+    {
+      if (data.resources.bee == null) {
+        //alert("inek yok");  console.log("inek yok");
+      } else {
+          var boy= data.resources.bee.length;
+        for (var j = 0; j <boy; j++) {
+
+          var btime = new Date(data.resources.bee[j].death);
+          var now = new Date();
+          var dif = fonk.diffMin(now, btime);
+          if (dif >= 30) {
+            var del = data.resources.bee.splice(j, 1);
+            j--;
+            boy--;
+          }
+        }
+      }
+    }    
+  return data;
 }
 
 // Ana Sayfa Yönlendirmesi
-router.get('/', middleware.requireAuthentication, function (req, res, next) {
-  var i = req.session.account.indis;
+router.get('/',fonk.requireAuthentication, function (req, res, next) {
 
-  olum(i).then(function (params) {
-    uretimKaynak(i).then(function (params) {
-      tuketimKaynak(i).then(function (params) {
+  var data=req.session.account;
+  //res.json(data);
+  var tamp=uretimKaynak(data);
+  var tamp2=olum(tamp);
+  //res.json(tamp);
+  var aydi=req.session.account._id;
+  Member.findByIdAndUpdate(aydi,
+    {
+      'resources.milk':tamp2.resources.milk,
+      'resources.cow':tamp2.resources.cow,
+      'resources.honey':tamp2.resources.honey,
+      'resources.bee':tamp2.resources.bee,
+      'resources.egg':tamp2.resources.egg,
+      'resources.chicken':tamp2.resources.chicken,
+      'resources.seed':tamp2.resources.seed
+    }
+      ,function(err,data){
+      if(err){res.send("update hata"); throw err;}
+      else{ 
         res.render('index');
+        //  res.json(data);
+          }        
       });
-    });
-  });
 });
 module.exports = router;

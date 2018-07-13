@@ -1,12 +1,21 @@
-//kayit işlemleri
 var express = require('express');
 var router = express.Router();
 var Member=require("../models/Members.js");
 var need=require('./uretimZaman.js');
-
-router.post('/satinAl',need.requireAuthentication,function(req, res, next) {
-    var item=req.body.item;
+// Hayvan Ve Yem Alma Sayfasına Yönlendirme
+router.get('/', need.requireAuthentication, function (req, res, next) {
+    var data = {
+      hata: null
+    }
+    res.render('hayvan-al', { viewData: data });
+  });
+//satinalma işlemleri
+router.post('/',need.requireAuthentication,function(req, res, next) {
+    var item=req.body.islem;
     var aydi=req.session.account._id;
+    var vdata = {
+        hata: false
+      };
 
     switch(item){
         case"cow":
@@ -19,13 +28,13 @@ router.post('/satinAl',need.requireAuthentication,function(req, res, next) {
                     'resources.coin':yeniPara
                 }
                 ,function(err,data){
-                    if(err){console.log("update hata"); throw err;}
+                    if(err){vdata.hata = true; throw err;}
                     else{
-                        
-                        res.json(data);
+                        res.render('hayvan-al', { viewData: vdata });
+                        //res.json(data);
                     }        
                 });
-            }else{res.send("para yok"); }
+            }else{vdata.hata = true; }
             break;
         case"chicken":
                 if(req.session.account.resources.coin>=20){
@@ -37,13 +46,13 @@ router.post('/satinAl',need.requireAuthentication,function(req, res, next) {
                         'resources.coin':yeniPara
                     }
                     ,function(err,data){
-                        if(err){console.log("update hata"); throw err;}
+                        if(err){vdata.hata = true; throw err;}
                         else{
-                            
-                            res.json(data);
+                            res.render('hayvan-al', { viewData: vdata });
+                            //res.json(data);
                         }        
                 });
-                    }else{res.send("para yok"); }
+                    }else{vdata.hata = true; }
             break;
         case"bee":
                 if(req.session.account.resources.coin>=5){
@@ -55,13 +64,13 @@ router.post('/satinAl',need.requireAuthentication,function(req, res, next) {
                         'resources.coin':yeniPara
                     }
                     ,function(err,data){
-                        if(err){console.log("update hata"); throw err;}
+                        if(err){vdata.hata = true; throw err;}
                         else{
-                            
-                            res.json(data);
+                            res.render('hayvan-al', { viewData: vdata });
+                            //res.json(data);
                         }        
                     });
-                }else{res.send("para yok"); }
+                }else{vdata.hata = true; }
             break;
         case"seed":
                 if(req.session.account.resources.coin>=1){
@@ -73,13 +82,13 @@ router.post('/satinAl',need.requireAuthentication,function(req, res, next) {
                         'resources.coin':yeniPara
                     }
                     ,function(err,data){
-                        if(err){console.log("update hata"); throw err;}
+                        if(err){vdata.hata = true; throw err;}
                         else{
-                            
-                            res.json(data);
+                            res.render('hayvan-al', { viewData: vdata });
+                            //res.json(data);
                         }        
                     });
-                }else{res.send("para yok"); }
+                }else{vdata.hata = true; }
         break;                    
         default:
             break;

@@ -47,20 +47,23 @@ eatSeedBee:function(time){//arı dkda 1 yem
     return time*1;
 },
 requireAuthentication: function (req, res, next) {
-    //if (req.session.account) {
+    if (req.session.account) {
 
         var varmi = false;
-        Member.findOne({userName:req.body.userName},function(err,data){
-            if(err){res.send("hataMidİç"); throw err;}
+        //console.log(req.session.account.userName);
+        Member.findOne({userName:req.session.account.userName},function(err,data){
+            if(err){res.send(err); throw err;}
             else{
+               // console.log(data);
                 req.session.account = data;
                 res.locals.account = req.session.account;
                 next();
             }
         });
-  /*  } else {
-        res.send("hataMidDış");//res.redirect('/login');
-    }*/
+    } else {
+       res.redirect('/login');
+       // res.send("uretimzaman");
+    }
   }
 
 

@@ -15,14 +15,14 @@ block content
             li.breadcrumb-item
                 i.fa.fa-home.fa-lg
             li.breadcrumb-item
-                a(href='altin-islem') Altın Al-Sat
+                a(href='sat') Altın Al-Sat
 
     .row
         .col-md-6
             .tile
                 .tile-body
                     h2 Altın Satın Al
-                form(action="altin-islem-al",method="post")
+                form(action="para/paraYukle",method="post")
                     .form-group
                         label Satın Alınacak Miktar
                         input.form-control(type="number",name="miktar",placeholder="Satın Alınacak Miktar")
@@ -33,7 +33,7 @@ block content
             .tile
                 .tile-body
                     h2 Altın Sat
-                form(action="altin-islem-sat",method="post")
+                form(action="para/paraCek",method="post")
                     .form-group
                         label Satılacak Miktar
                         input.form-control(type="number",name="miktar",placeholder="Satılacak Miktar")

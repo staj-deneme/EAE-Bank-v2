@@ -15,9 +15,43 @@ block content
 			li.breadcrumb-item
 				i.fa.fa-home.fa-lg
 			li.breadcrumb-item
-				a(href='#') Blank Page
+				a(href='sat') Blank Page
 
 	.row
-		.col-md-12
-			.tile
-				.tile-body Create a beautiful dashboard
+		.col-md-4.col-lg-4
+			.widget-small.primary.coloured-icon
+				i.icon(style="padding:10px;height: 115px;") 
+					img(src="images/süt.png",style="width: 60px;")
+				div.info
+					h4 Süt
+					p
+						b #{account.resources.milk} Litre
+					form(action="sat",method="post")
+						input(type="hidden",value="milk",name="islem")
+						input.btn.btn-primary.btn-block(type="submit",value="sat")
+
+		.col-md-4.col-lg-4
+			.widget-small.warning.coloured-icon
+				i.icon(style="padding:10px;height: 115px;") 
+					img(src="images/yumurta.png",style="width: 60px;")
+				div.info
+					h4 Yumurta
+					p
+						b #{account.resources.egg} Adet
+					form(action="sat",method="post")
+						input(type="hidden",value="egg",name="islem")
+						input.btn.btn-primary.btn-block(type="submit",value="sat")
+
+		.col-md-4.col-lg-4
+			.widget-small.info.coloured-icon
+				i.icon(style="padding:10px;height: 115px;") 
+					img(src="images/bal.png",style="width: 60px;")
+				div.info
+					h4 Bal
+					p
+						b #{account.resources.honey} Gram
+					form(action="sat",method="post")
+						input(type="hidden",value="honey",name="islem")
+						input.btn.btn-primary.btn-block(type="submit",value="sat")
+
+		
